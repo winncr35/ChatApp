@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import Session from "../models/Session.js";
+import crypto from "crypto";
 
 const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 days in seconds
@@ -70,13 +72,37 @@ export const signIn = async (req, res) => {
             sameSite: "none", // backend, frontend are on different domains
             maxAge: REFRESH_TOKEN_TTL
         });
-        return res.status(200).json({ message: `User ${user.displayName} signed in successfully!` }, accessToken);
+        return res.status(200).json({
+            message: `User ${user.displayName} signed in successfully!`,
+            accessToken: accessToken,
+
+        });
 
 
 
     }
     catch (error) {
         console.error('Error occurred while signing in:', error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
+export const signOut = async (req, res) => {
+    try {
+        //get refresh token from cookie
+        const refreshToken = req.cookies?.refreshToken;
+        if (refreshToken) {
+            await Session.deleteOne({ refreshToken: refreshToken });
+
+            // delete refresh token from session
+
+
+            // delete cookie
+            res.clearCookie("refreshToken");
+        }
+        return res.status(200).json({ message: "Signed out successfully" });
+    }
+    catch (error) {
+        console.error('Error occurred while signing out:', error);
         return res.status(500).json({ message: "Internal server error" });
     }
 }
