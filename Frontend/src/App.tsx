@@ -3,6 +3,7 @@ import Login from "./pages/login.tsx"
 import SignUp from "./pages/signup.tsx"
 import ChatApp from "./pages/chatapp.tsx"
 import { Toaster } from "sonner"
+import ProtectedRoute from "@/components/auth/ProtectedRoute.tsx"
 function App() {
 
   return (
@@ -20,11 +21,13 @@ function App() {
           />
           {/* Protected routes */}
 
+          <Route element={<ProtectedRoute />}>
 
-          <Route path='/'
-            element={<ChatApp />}
-          />
-          \
+            <Route path='/'
+              element={<ChatApp />}
+            />
+          </Route>
+
         </Routes>
       </BrowserRouter>
 

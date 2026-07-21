@@ -6,6 +6,10 @@ import { Label } from '@/components/ui/label';
 import { z } from 'zod';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router";
+import { useAuthStore } from "../../stores/useAuthStore.tsx";
+import { toast } from "sonner"
+
 
 const loginSchema = z.object({
 
@@ -18,11 +22,18 @@ export function LoginForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
-
+    const { Login } = useAuthStore();
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema)
     })
     const onSubmit = async (data: LoginFormValues) => {
+        const { username, password } = data;
+
+        await Login(username, password)
+        navigate("/")
+
+
 
 
     }

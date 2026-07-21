@@ -6,6 +6,8 @@ import crypto from "crypto";
 
 const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 days in seconds
+
+
 export const signUp = async (req, res) => {
     try {
 
@@ -15,9 +17,17 @@ export const signUp = async (req, res) => {
 
         }
         // Check if the username or email already exists in the database
-        const duplicateUSer = await User.findOne({ username: username });
-        if (duplicateUSer) {
-            return res.status(400).json({ message: "Username or email already exists" });
+        const duplicateUser = await User.findOne({
+            $or: [{ username }, { email }]
+        });
+
+        if (duplicateUser) {
+            if (duplicateUser.username === username) {
+                return res.status(400).json({ message: "Username already exists" });
+            }
+            if (duplicateUser.email === email) {
+                return res.status(400).json({ message: "Email already exists" });
+            }
         }
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10); // salt = 10
@@ -37,6 +47,7 @@ export const signUp = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
+// Todo : Move logic to Service Folder
 
 export const signIn = async (req, res) => {
     try {

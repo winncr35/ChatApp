@@ -6,8 +6,9 @@ import { Label } from '@/components/ui/label';
 import { z } from 'zod';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuthStore } from "../../store/useAuthStore.tsx";
+import { useAuthStore } from "../../stores/useAuthStore.tsx";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 const signUpSchema = z.object({
   firstname: z.string().min(1, 'Required '),
@@ -31,8 +32,14 @@ export function SignupForm({
   const onSubmit = async (data: SignupFormValues) => {
     const { firstname, lastname, username, email, password } = data;
 
-    await signUp(username, password, email, firstname, lastname)
-    navigate("/signin");
+    try {
+      await signUp(username, password, email, firstname, lastname)
+      navigate("/signin");
+    }
+    catch (error: any) {
+      const message = error?.response?.data?.message || "Sign up failed";
+      toast.error(message);
+    }
   }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
