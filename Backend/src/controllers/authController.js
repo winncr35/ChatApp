@@ -8,6 +8,7 @@ const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 days in seconds
 export const signUp = async (req, res) => {
     try {
+
         const { username, password, email, firstName, lastName } = req.body;
         if (!username || !password || !email || !firstName || !lastName) {
             return res.status(400).json({ message: "All fields are required" });
