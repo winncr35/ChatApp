@@ -6,7 +6,7 @@ export const authMe = (req, res) => {
         return res.status(200).json({ user: user });
     }
     catch (error) {
-        console.error('error when calling authMe', error);
+        console.Error('error when calling authMe', error);
         return res.status(500).json({ message: "System Error" })
     }
 }

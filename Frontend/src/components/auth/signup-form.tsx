@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "../../stores/useAuthStore.tsx";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/utils";
 
 const signUpSchema = z.object({
   firstname: z.string().min(1, 'Required '),
@@ -36,10 +37,11 @@ export function SignupForm({
       await signUp(username, password, email, firstname, lastname)
       navigate("/signin");
     }
-    catch (error: any) {
-      const message = error?.response?.data?.message || "Sign up failed";
-      toast.error(message);
+
+    catch (error: unknown) {
+      toast.error(getErrorMessage(error, "Sign up failed"));
     }
+
   }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

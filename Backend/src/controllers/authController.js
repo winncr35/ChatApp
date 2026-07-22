@@ -5,8 +5,8 @@ import Session from "../models/Session.js";
 import crypto from "crypto";
 
 const ACCESS_TOKEN_TTL = "15m";
-const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 days in seconds
-
+const REFRESH_TOKEN_TTL = 50 * 24 * 60 * 60 * 1000; // 50 days in seconds
+const salt = 10;
 
 export const signUp = async (req, res) => {
     try {
@@ -30,7 +30,7 @@ export const signUp = async (req, res) => {
             }
         }
         // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10); // salt = 10
+        const hashedPassword = await bcrypt.hash(password, salt); // salt = 10
 
         // Create a new user
         await User.create({

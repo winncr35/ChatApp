@@ -5,15 +5,25 @@ import type { AuthState } from '@/types/store';
 
 
 export const useAuthStore = create<AuthState>((set, get) => ({
+
+
+    //STATE 
+
     accessToken: null,
     user: null,
     loading: false,
+
+
+
+    // ACTION
     setAccessToken: (accessToken) => {
-        set({ accessToken });
+        set({ accessToken: accessToken });
     },
     clearState: () => {
         set({ accessToken: null, user: null, loading: false })
     },
+
+
 
     signUp: async (username, password, email, firstName, lastName) => {
         try {
@@ -64,7 +74,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         try {
             set({ loading: true })
             const user = await authService.fetchMe();
-            set({ user })
+            set({ user: user })
         }
         catch (error) {
             console.error(error);
