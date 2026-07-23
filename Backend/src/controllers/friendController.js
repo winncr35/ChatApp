@@ -24,7 +24,7 @@ export const sentFriendRequest = async (req, res) => {
             [userA, userB] = [userB, userA];
         }
         const [alreadyFriends, existingRequest] = await Promise.all([
-            Friend.findOne({ userA, userB }),
+            Friend.findOne({ userA: userA, userB: userB }),
             FriendRequest.findOne({
                 $or: [
                     { from, to },
@@ -60,7 +60,7 @@ export const acceptFriendRequest = async (req, res) => {
         const request = await FriendRequest.findById(requestId);
 
         if (!request) {
-            return res.status(400).json({ message: "Can not find friend request " })
+            return res.status(400).json({ message: "Can not find any friend request " })
 
         }
         if (request.to.toString() !== userId.toString()) {
