@@ -4,7 +4,15 @@ import SignUp from "./pages/signup.tsx"
 import ChatApp from "./pages/chatapp.tsx"
 import { Toaster } from "sonner"
 import ProtectedRoute from "@/components/auth/ProtectedRoute.tsx"
+import { useThemeStore } from "./stores/useThemeStore.tsx"
+import { useEffect } from "react"
 function App() {
+  const { isDark, setTheme } = useThemeStore();
+  useEffect(
+    () => {
+      setTheme(isDark);
+    }, [isDark, setTheme]);
+
 
   return (
     <>

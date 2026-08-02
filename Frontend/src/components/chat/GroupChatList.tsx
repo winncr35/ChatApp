@@ -1,0 +1,22 @@
+import React from 'react'
+import { useChatStore } from '../../stores/useChatStore.ts';
+import GroupChatCard from './GroupChatCard.tsx'
+const GroupChatList = () => {
+    const { conversations } = useChatStore();
+
+    if (!conversations) return;
+
+    const groupchats = conversations.filter((conversation) => conversation.type === 'group');
+    return (
+        <div className='flex-1 overflow-y-auto p-2 space-y-2'>
+            {
+                groupchats.map((conversation) => (
+                    <GroupChatCard
+                        conversation={conversation} />
+                ))
+            }
+        </div>
+    )
+}
+
+export default GroupChatList

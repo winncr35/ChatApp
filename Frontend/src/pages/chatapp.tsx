@@ -1,15 +1,14 @@
-import React from 'react'
-import Logout from '../components/auth/logout.tsx';
-import { useAuthStore } from '../stores/useAuthStore.tsx';
-
+import { AppSidebar } from "@/components/sidebar/app-sidebar.tsx";
+import { SidebarProvider } from "@/components/ui/sidebar.tsx";
+import ChatWindowLayout from "../components/chat/ChatWindowLayout.tsx";
 const ChatApp = () => {
-    const user = useAuthStore((s) => s.user);
-
     return (
-        <div>
-            {user?.username}
-            <Logout />
-        </div>
+        <SidebarProvider>
+            <AppSidebar />
+            <div className="flex h-screen w-full p-2.5">
+                <ChatWindowLayout />
+            </div>
+        </SidebarProvider>
     )
 }
 
