@@ -19,18 +19,22 @@ export const createConversation = async (req, res) => {
         }
         let conversation;
 
-        if (type === ' direct') {
+        if (type === 'direct') {
             const participantId = memberIds[0];
+            console.log(userId);
+            console.log(participantId);
+
             conversation = await Conversation.findOne({
                 type: 'direct',
                 "participants.userId": { $all: [userId, participantId] },
             });
+            console.log(conversation);
 
             if (!conversation) {
-                conversation = new conversation({
+                conversation = new Conversation({
                     type: 'direct',
                     participants: [{ userId }, { userId: participantId }],
-                    lastmessageAt: new Date()
+                    lastMessageAt: new Date()
                 })
                 await conversation.save();
             }
@@ -43,7 +47,7 @@ export const createConversation = async (req, res) => {
                     name,
                     createBy: userId
                 },
-                lastmessageAt: new Date()
+                lastMessageAt: new Date()
             });
             await conversation.save();
         }
@@ -75,7 +79,7 @@ export const getConversation = async (req, res) => {
         const conversations = await Conversation.find({
             'participants.userId': userId
         })
-            .sort({ lastmessageAt: -1, updateAt: -1 })
+            .sort({ lastMessageAt: -1, updateAt: -1 })
             .populate({
                 path: 'participants.userId',
                 select: 'displayName avatarUrl'

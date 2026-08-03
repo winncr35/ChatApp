@@ -7,12 +7,15 @@ const DirectMessageList = () => {
     if (!conversations) return;
 
     const directConversations = conversations.filter((conversation) => conversation.type === 'direct');
+
     return (
         <div className='flex-1 overflow-y-auto p-2 space-y-2'>
+
+
             {
                 directConversations.map((conversation) => (
                     <DirectMessageCard
-                        conversation={conversation} />
+                        conversation={conversation} key={conversation._id} />
                 ))
             }
         </div>

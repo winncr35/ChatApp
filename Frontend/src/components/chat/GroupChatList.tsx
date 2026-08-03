@@ -1,5 +1,5 @@
 import React from 'react'
-import { useChatStore } from '../../stores/useChatStore.ts';
+import { useChatStore } from '@/stores/useChatStore.ts';
 import GroupChatCard from './GroupChatCard.tsx'
 const GroupChatList = () => {
     const { conversations } = useChatStore();
@@ -12,7 +12,7 @@ const GroupChatList = () => {
             {
                 groupchats.map((conversation) => (
                     <GroupChatCard
-                        conversation={conversation} />
+                        conversation={conversation} key={conversation._id} />
                 ))
             }
         </div>

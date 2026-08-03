@@ -2,8 +2,8 @@
 
 import * as React from "react"
 
-
 import { NavUser } from "@/components/sidebar/nav-user"
+
 import {
   Sidebar,
   SidebarContent,
@@ -25,12 +25,13 @@ import NewGroupChatModal from "../chat/NewGroupChatModel.tsx"
 import AddFriendModal from "../chat/AddFriendModal.tsx"
 import DirectMessageList from "../chat/DirectMessageList.tsx"
 import { useThemeStore } from "../../stores/useThemeStore.tsx"
+import { useAuthStore } from "../../stores/useAuthStore.tsx"
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const { isDark, toggleTheme } = useThemeStore();
-
+  const { user } = useAuthStore();
 
 
   return (
@@ -71,7 +72,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
         <SidebarGroup>
           <SidebarGroupLabel className="uppercase">
-
+            Group Chat
           </SidebarGroupLabel>
           <SidebarGroupAction title="Create group" className="cursor-pointer" >
             <NewGroupChatModal />
@@ -89,7 +90,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* Direct Message */}
         <SidebarGroup>
           <SidebarGroupLabel className="uppercase">
-
+            Friend
           </SidebarGroupLabel>
           <SidebarGroupAction title="Friend" className="cursor-pointer" >
             <AddFriendModal />
@@ -108,7 +109,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       {/* Footer */}
       <SidebarFooter>
-        {/* <NavUser user={data.user} /> */}
+        {user && <NavUser user={user} />}
       </SidebarFooter>
     </Sidebar >
   )

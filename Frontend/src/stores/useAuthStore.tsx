@@ -102,6 +102,8 @@ export const useAuthStore = create<AuthState>()(
                 if (!user) {
                     await fetchMe();
                 }
+                useChatStore.getState().fetchConversations();
+
 
             }
             catch (error) {

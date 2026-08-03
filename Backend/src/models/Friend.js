@@ -22,7 +22,7 @@ const friendSchema = new mongoose.Schema({
     }
 )
 
-friendSchema.pre('save', function () {
+friendSchema.pre('save', function (next) {
     const a = this.userA.toString();
     const b = this.userB.toString();
     if (a > b) {
@@ -30,6 +30,7 @@ friendSchema.pre('save', function () {
         this.userB = new mongoose.Types.ObjectId(a);
 
     }
+    next();
 
 });
 friendSchema.index({ userA: 1, userB: 1 }, { unique: true });

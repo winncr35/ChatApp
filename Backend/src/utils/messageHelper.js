@@ -6,7 +6,7 @@ export const updateConversationAfterCreateMessage = (conversation, message, send
             _id: message._id,
             content: message.content,
             senderId,
-            createAt: message.createAt
+            createdAt: message.createdAt
         }
     });
     conversation.participants.forEach((p) => {

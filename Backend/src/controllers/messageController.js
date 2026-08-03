@@ -8,14 +8,28 @@ export const sendDirectMessage = async (req, res) => {
         const { recipientId, content, conversationId } = req.body;
 
         const senderId = req.user._id;
+
+
         let conversation;
 
-        if (!content) {
-            return res.status(400).json({ message: "No content" })
+        if (!conversation) {
+            conversation = await Conversation.findOne({
+                type: "direct",
+                $and: [
+                    {
+                        participants: {
+                            $elemMatch: { userId: senderId }
+                        }
+                    },
+                    {
+                        participants: {
+                            $elemMatch: { userId: recipientId }
+                        }
+                    }
+                ]
+            });
         }
-        if (conversationId) {
-            conversation = await Conversation.findById(conversationId);
-        }
+
         if (!conversation) {
             conversation = await Conversation.create({
                 type: "direct",
