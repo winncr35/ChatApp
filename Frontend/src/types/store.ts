@@ -36,7 +36,7 @@ export interface ChatState {
         nextCursor?: string | null; // pagination
     }>
     activeConversationId: string | null;
-    loading: boolean;
+    conversationLoading: boolean;
     messageLoading: boolean;
     reset: () => void;
     setActiveConversation: (id: string | null) => void;

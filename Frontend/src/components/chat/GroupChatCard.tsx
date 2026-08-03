@@ -2,15 +2,13 @@ import type { Conversation } from '@/types/chat.ts'
 import ChatCard from './ChatCard.tsx'
 import { useChatStore } from '../../stores/useChatStore.ts';
 import { useAuthStore } from "../../stores/useAuthStore.tsx";
-import { cn } from '../../lib/utils.ts';
 import UnreadCountBadge from './UnreadCountBadge.tsx';
-import StatusBadge from './StatusBadge.tsx';
-import UserAvatar from './UserAvatar.tsx';
+
 import GroupChatAvatar from './GroupChatAvatar.tsx';
 
 const GroupChatCard = ({ conversation }: { conversation: Conversation }) => {
     const { user } = useAuthStore();
-    const { activeConversationId, setActiveConversation, messages } = useChatStore();
+    const { activeConversationId, setActiveConversation, messages, fetchMessages } = useChatStore();
 
     if (!user) return null;
     const unreadCount = conversation.unreadCounts[user._id];
@@ -19,6 +17,7 @@ const GroupChatCard = ({ conversation }: { conversation: Conversation }) => {
     const handleSelectConversation = async (id: string) => {
         setActiveConversation(id);
         if (!messages[id]) {
+            await fetchMessages();
         }
     }
 
